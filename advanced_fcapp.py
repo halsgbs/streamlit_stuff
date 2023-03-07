@@ -102,7 +102,7 @@ elif selected_option == "Search for account - Customer Label":
             with st.spinner('getting your results...'):
                 results = search_for_custlabel(cust_label)
                 st.write(results)
-elif selected_option == 'data results':
+elif selected_option == 'Data results':
     st.write(""" ## Full Dataset """)
     st.write(full_table)
 
