@@ -3,13 +3,16 @@ import pandas as pd
 from streamlit_option_menu import option_menu
 import requests
 from streamlit_lottie import st_lottie
+from PIL import Image
 
 st.set_page_config(page_title='FC search engine', page_icon=':tada')
 full_table = pd.read_excel('master_data.xlsx')
 checks_table = pd.read_excel('Results.xlsx')
 
-
-
+image1 = Image.open('page1.png')
+image2 = Image.open('page2.png')
+image3 = Image.open('page3.png')
+image4 = Image.open('page4.png')
 
 
 def search_for_custkey(seqq):
@@ -57,27 +60,13 @@ def load_lottieurl(url):
 
 
 selected_option = option_menu(menu_title= 'Financial Crime Search Engine',
-    options = ["Home", "Search for account - Customer Key", "Search for account - Customer Label", "Legal Checks", "Data results"],
-    icons=['house', 'search', 'layers' ,'list','bar-chart-fill'],
+    options = ["Home", "Search for account - Customer Key", "Search for account - Customer Label", "Legal Checks", "Data results", "Dashboard"],
+    icons=['house', 'search', 'layers' ,'list','bar-chart-fill', 'easel'],
     menu_icon='cast',
     default_index=0,
     orientation='Horizontal')
 
-# if 'customer_key' not in st.session_state:
-#     st.session_state['customer_key'] = 0
 
-# if 'search_button' not in st.session_state:
-#     st.session_state['search_button'] = False
-# st.write(st.session_state)
-
-# Create sidebar with options
-#options = ["Home", "Search for account - customer Key", "Search for account - customer label", "data results"]
-#ßselected = st.sidebar.selectbox("Select an option", options)
-# Display output based on selected option
-# if selected_option == 'Home':
-#     # st.write(""" 
-#     # Please see sidebar for options :) 
-#     # """)
 lottie_arrow = load_lottieurl('https://assets10.lottiefiles.com/packages/lf20_mc9dp5xs.json')
 lottie_welcome = load_lottieurl('https://assets10.lottiefiles.com/packages/lf20_onhsipvc.json')
 
@@ -85,9 +74,7 @@ if selected_option == 'Home':
     st_lottie(lottie_welcome)
 
 if selected_option == "Search for account - Customer Key":
-        # st.write(""" 
-        # # Financial Crime Search Engine
-        # """)        
+     
         st.header('Search for Customer Information')
         st.write('##')
         with st.form(key='my_form'):
@@ -103,9 +90,7 @@ if selected_option == "Search for account - Customer Key":
 
 elif selected_option == "Search for account - Customer Label":
 
-        # st.write(""" 
-        # # Financial Crime Search Engine
-        # """)
+  
         st.header('Search for Customer Information')
         with st.form(key='my_form2'):
             cust_label = st.text_input('Enter Customer Label: ')
@@ -117,7 +102,7 @@ elif selected_option == "Search for account - Customer Label":
             with st.spinner('getting your results...'):
                 results = search_for_custlabel(cust_label)
                 st.write(results)
-elif selected_option == 'Data results':
+elif selected_option == 'data results':
     st.write(""" ## Full Dataset """)
     st.write(full_table)
 
@@ -131,7 +116,7 @@ elif selected_option == 'Legal Checks':
         search_button = st.form_submit_button(label="Search")
     
     if search_button:
-        #st.header()
+
         st.write('###')
 
         with st.spinner('getting your results...'):
@@ -151,3 +136,8 @@ elif selected_option == 'Legal Checks':
                 for item in results2:
                     st.write(item)
 
+elif selected_option == 'Dashboard':
+    st.image(image1, use_column_width=True)
+    st.image(image2, use_column_width=True)
+    st.image(image3, use_column_width=True)
+    st.image(image4, use_column_width=True)
