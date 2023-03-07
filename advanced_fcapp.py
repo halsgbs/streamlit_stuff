@@ -3,16 +3,17 @@ import pandas as pd
 from streamlit_option_menu import option_menu
 import requests
 from streamlit_lottie import st_lottie
-from PIL import Image
+#from PIL import Image
+import PIL
 
 st.set_page_config(page_title='FC search engine', page_icon=':tada')
 full_table = pd.read_excel('master_data.xlsx')
 checks_table = pd.read_excel('Results.xlsx')
 
-image1 = Image.open('page1.png')
-image2 = Image.open('page2.png')
-image3 = Image.open('page3.png')
-image4 = Image.open('page4.png')
+image1 = PIL.Image.open('page1.png')
+image2 = PIL.Image.open('page2.png')
+image3 = PIL.Image.open('page3.png')
+image4 = PIL.Image.open('page4.png')
 
 
 def search_for_custkey(seqq):
