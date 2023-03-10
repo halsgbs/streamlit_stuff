@@ -10,20 +10,93 @@ st.set_page_config(page_title='FC search engine', page_icon=':tada')
 full_table = pd.read_excel('master_data.xlsx')
 checks_table = pd.read_excel('Results.xlsx')
 
+
 image1 = PIL.Image.open('page1.png')
 image2 = PIL.Image.open('page2.png')
 image3 = PIL.Image.open('page3.png')
 image4 = PIL.Image.open('page4.png')
 
+def customer_status(customer_key):
+    df = pd.read_excel('tracker.xlsx')
+    df.set_index('CustomerKey', inplace=True)
+    if int(customer_key) in df.index:
+        row = df.loc[int(customer_key)]
+        withdrawals = row['Withdrawals']
+        refund_attempt =row['Refund_Attempt']
+        moneydest = row['Money_Destination']
+        investigation = row['Investigation']
+        frozen = row['Frozen']
+        facility_limit = row['Facility_Limit']
+        outstanding_balance = row['Outstanding_balance']
+
+
+        result = {'Outstanding Balance': outstanding_balance,
+        'Withdrawals': withdrawals,
+        'Refund Attempt': refund_attempt,
+        'Money Destination': moneydest,
+        'Investigation': investigation,
+        'Frozen': frozen,
+        'Facility Limit': facility_limit
+        }
+        return result
+    else:
+        return None 
+
+
+
+
+def get_customer_data(customer_key):
+    # Check if customer key is in the index
+    df = pd.read_excel('master_data.xlsx')
+    df.set_index('CustomerKey', inplace=True)
+    if int(customer_key) in df.index:
+        # Get the row for the customer key
+        
+        # Get the email address and phone number column values
+        row = df.loc[int(customer_key)]
+        first_name = row['FirstName']
+        last_name = row['LastName']
+        email_address = row['EmailAddress']
+        phone_number = row['Phone']
+        address = row['AddressLine1']
+        birth_date = row['BirthDate']
+        marital_status = row['MaritalStatus']
+        gender = row['Gender']
+        yearlyincome = row['YearlyIncome']
+        total_kids = row['TotalChildren']
+        education = row['Education']
+        occupation = row['Occupation']
+        cars_owned = row['NumberCarsOwned']
+
+        # Create a dictionary with 'emailaddress' and 'phonenumber' as the keys and their respective column values as the values
+        result = {'First Name': first_name, 
+        'Last Name': last_name, 
+        'Email': email_address, 
+        'Phone number': phone_number,
+        'Address': address,
+        'Birth Date': birth_date,
+        'Marital Status': marital_status,
+        'Gender': gender,
+        'Yearly Income': yearlyincome,
+        'Number of Kids': total_kids,
+        'Education': education,
+        'Occupation': occupation,
+        'Cars owned': cars_owned
+        }
+        return result
+    else:
+        return None
 
 def search_for_custkey(seqq):
     df = pd.read_excel('master_data.xlsx')
-    search_results = df[df['CustomerKey'] == int(seqq)]
+    search_res = df[df['CustomerKey'] == int(seqq)]
+    search_results = df[search_res]
     return search_results
 
 def search_for_custlabel(seqq):
     df = pd.read_excel('master_data.xlsx')
-    search_results = df[df['CustomerLabel'] == int(seqq)]
+    search_res = df[df['CustomerLabel'] == int(seqq)]
+    search_results = df[search_res]
     return search_results
 
 def all_checks_passed(seqq):
@@ -61,8 +134,8 @@ def load_lottieurl(url):
 
 
 selected_option = option_menu(menu_title= 'Financial Crime Search Engine',
-    options = ["Home", "Search for account - Customer Key", "Search for account - Customer Label", "Legal Checks", "Data results", "Dashboard"],
-    icons=['house', 'search', 'layers' ,'list','bar-chart-fill', 'easel'],
+    options = ["Home", "Customer Info", "Account Tracker", "Legal Checks", "Dashboard"],
+    icons=['house', 'search' ,'list', 'easel'],
     menu_icon='cast',
     default_index=0,
     orientation='Horizontal')
@@ -74,7 +147,7 @@ lottie_welcome = load_lottieurl('https://assets10.lottiefiles.com/packages/lf20_
 if selected_option == 'Home':
     st_lottie(lottie_welcome)
 
-if selected_option == "Search for account - Customer Key":
+if selected_option == "Customer Info":
      
         st.header('Search for Customer Information')
         st.write('##')
@@ -86,26 +159,26 @@ if selected_option == "Search for account - Customer Key":
             st.header('Results')
             st.write('###')
             with st.spinner('getting your results...'):
-                results = search_for_custkey(customer_key)
-                st.write(results)
+                results = get_customer_data(customer_key)
+                #st.write(results)
+                for key,value in results.items():
+                    st.write(f'{key}: {value}')
 
-elif selected_option == "Search for account - Customer Label":
-
+elif selected_option == 'Account Tracker':
+    st.header('Search for Account Information')
+    st.write('##')
+    with st.form(key='my_form'):
+        customer_key = st.text_input("Enter customer key:")
+        search_button = st.form_submit_button(label="Search")
   
-        st.header('Search for Customer Information')
-        with st.form(key='my_form2'):
-            cust_label = st.text_input('Enter Customer Label: ')
-            search_button = st.form_submit_button(label='Search')
-
-        if search_button:
-            st.header('Results')
-            st.write('###')
-            with st.spinner('getting your results...'):
-                results = search_for_custlabel(cust_label)
-                st.write(results)
-elif selected_option == 'Data results':
-    st.write(""" ## Full Dataset """)
-    st.write(full_table)
+    if search_button:
+        st.header('Results')
+        st.write('###')
+        with st.spinner('getting your results...'):
+            results = customer_status(customer_key)
+            #st.write(results)
+            for key,value in results.items():
+                st.write(f'{key}: {value}')
 
 elif selected_option == 'Legal Checks':
     st.write(""" 
