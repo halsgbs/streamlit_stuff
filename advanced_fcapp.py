@@ -94,13 +94,13 @@ def search_for_custlabel(seqq):
     return search_results
 
 def all_checks_passed(seqq):
-    df = pd.read_excel('Results.xlsx')
+    df = pd.read_excel('tracker.xlsx')
     search_results = df.loc[df['CustomerKey'] == int(seqq)]
-    all_checks = search_results['all_clear'].values[0]
+    all_checks = search_results['All_Clear'].values[0]
     first_name = search_results['FirstName'].values[0]
     last_name = search_results['LastName'].values[0]
     name_of_cust = first_name + ' ' + last_name
-    if all_checks == 'Yes':
+    if all_checks == 0:
         end_message = f'{name_of_cust} has passed all the checks.'
         return end_message
     else:
@@ -110,11 +110,13 @@ def all_checks_passed(seqq):
 
 
 def which_checks(seqq):
-    df = pd.read_excel('Results_without_allclear.xlsx')
+    df = pd.read_excel('which_checks.xlsx')
     search_results = df.loc[df['CustomerKey'] == int(seqq)]
     empty_list = []
     for column in df.columns:
-        if search_results[column].values == 'No':
+        if search_results[column].values == 1:
+            empty_list.append(column)
+        elif search_results[column].values == 'FALSE':
             empty_list.append(column)
     return empty_list 
 
