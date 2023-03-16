@@ -1,3 +1,4 @@
+
 import streamlit as st
 import pandas as pd
 from streamlit_option_menu import option_menu
@@ -7,14 +8,7 @@ from streamlit_lottie import st_lottie
 import PIL
 
 st.set_page_config(page_title='FC search engine', page_icon=':tada')
-full_table = pd.read_excel('master_data.xlsx')
-checks_table = pd.read_excel('Results.xlsx')
 
-
-image1 = PIL.Image.open('page1.png')
-image2 = PIL.Image.open('page2.png')
-image3 = PIL.Image.open('page3.png')
-image4 = PIL.Image.open('page4.png')
 
 def customer_status(customer_key):
     df = pd.read_excel('tracker.xlsx')
@@ -174,11 +168,19 @@ elif selected_option == 'Account Tracker':
     if search_button:
         st.header('Results')
         st.write('###')
-        with st.spinner('getting your results...'):
-            results = customer_status(customer_key)
+        options = st.selectbox('Info', ('Customer Info', 'Account Info'))
+        if options == 'Customer Info':
+            with st.spinner('getting your results...'):
+                results = get_customer_data(customer_key)
             #st.write(results)
-            for key,value in results.items():
-                st.write(f'{key}: {value}')
+                for key,value in results.items():
+                    st.write(f'{key}: {value}')
+        if options == 'Account Info':
+            with st.spinner('getting your results...'):
+                results = customer_status(customer_key)
+            #st.write(results)
+                for key,value in results.items():
+                    st.write(f'{key}: {value}')
 
 elif selected_option == 'Legal Checks':
     st.write(""" 
@@ -211,7 +213,8 @@ elif selected_option == 'Legal Checks':
                     st.write(item)
 
 elif selected_option == 'Dashboard':
-    st.image(image1, use_column_width=True)
-    st.image(image2, use_column_width=True)
-    st.image(image3, use_column_width=True)
-    st.image(image4, use_column_width=True)
+    st.image(PIL.Image.open('page1.png'), use_column_width=True)
+    st.image(PIL.Image.open('page2.png'), use_column_width=True)
+    st.image(PIL.Image.open('page3.png'), use_column_width=True)
+    st.image(PIL.Image.open('page4.png'), use_column_width=True)
+    st.image(PIL.Image.open('Picture1.png'), use_column_width=True)   
