@@ -135,11 +135,8 @@ selected_option = option_menu(menu_title= 'Financial Crime Search Engine',
     orientation='Horizontal')
 
 
-lottie_arrow = load_lottieurl('https://assets10.lottiefiles.com/packages/lf20_mc9dp5xs.json')
-lottie_welcome = load_lottieurl('https://assets10.lottiefiles.com/packages/lf20_onhsipvc.json')
-
 if selected_option == 'Home':
-    st_lottie(lottie_welcome)
+    st_lottie(load_lottieurl('https://assets10.lottiefiles.com/packages/lf20_onhsipvc.json'))
 
 if selected_option == "Customer Info":
      
@@ -168,19 +165,11 @@ elif selected_option == 'Account Tracker':
     if search_button:
         st.header('Results')
         st.write('###')
-        options = st.selectbox('Info', ('Customer Info', 'Account Info'))
-        if options == 'Customer Info':
-            with st.spinner('getting your results...'):
-                results = get_customer_data(customer_key)
+        with st.spinner('getting your results...'):
+            results = customer_status(customer_key)
             #st.write(results)
-                for key,value in results.items():
-                    st.write(f'{key}: {value}')
-        if options == 'Account Info':
-            with st.spinner('getting your results...'):
-                results = customer_status(customer_key)
-            #st.write(results)
-                for key,value in results.items():
-                    st.write(f'{key}: {value}')
+            for key,value in results.items():
+                st.write(f'{key}: {value}')
 
 elif selected_option == 'Legal Checks':
     st.write(""" 
@@ -203,7 +192,7 @@ elif selected_option == 'Legal Checks':
                 col1,col2 = st.columns([1,3])
                 with col1:
                     st.write('###')
-                    st_lottie(lottie_arrow, height=90)
+                    st_lottie(load_lottieurl('https://assets10.lottiefiles.com/packages/lf20_mc9dp5xs.json'), height=90)
                 st.write("""
 
                 ### Failed checks are:
