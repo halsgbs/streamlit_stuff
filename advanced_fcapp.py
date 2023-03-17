@@ -4,7 +4,6 @@ import pandas as pd
 from streamlit_option_menu import option_menu
 import requests
 from streamlit_lottie import st_lottie
-#from PIL import Image
 import PIL
 
 st.set_page_config(page_title='FC search engine', page_icon=':tada')
